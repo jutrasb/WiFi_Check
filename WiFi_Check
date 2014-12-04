@@ -40,10 +40,10 @@ lockfile='/var/run/WiFi_Check.pid'
 wlan='wlan0'
 
 # Isolate the intended gateway IP address from /etc/network/interfaces
-pingip=`cat /etc/network/interfaces | grep -m 1 "gateway" | awk '/gateway/ { print $2 }'`
+pingip=`cat /etc/network/interfaces | awk '/gateway/ { print $2; exit; }'`
 ##################################################################
 echo
-echo "Starting WiFi check for $wlan"
+echo "Starting Wi-Fi check on interface \"$wlan\"."
 date
 echo
 
@@ -54,8 +54,8 @@ flock -n 200 || exit 1
 pid=$$
 echo $pid 1>&200
 
-# We can perform check
-echo "Performing Network check for $wlan"
+# Now that the script is locked, perform the network check.
+echo "Performing network check for interface \"$wlan\"."
 /bin/ping -c 1 $pingip > /dev/null 2> /dev/null
 if [ $? -ge 1 ] ; then
     echo "Network connection down! Attempting reconnection..."
