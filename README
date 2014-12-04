@@ -1,8 +1,14 @@
 WiFi_Check
 
 Purpose:
-Script checks to see if WiFi has a network IP and if not
-restart WiFi
+This script checks to see if the computer is able to ping
+the gateway of the network. The original implementation of
+this project was unable to handle computers which have
+static IP addresses, which was fixed by mharizanov.
+
+I have added the ability to get the gateway from the
+/etc/network/interfaces file and then run ping -c 1 on that
+gateway IP address.
 
 Uses a lock file which prevents the script from running more
 than one at a time.  If lockfile is old, it removes it
